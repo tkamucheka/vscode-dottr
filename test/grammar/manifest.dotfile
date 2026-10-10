@@ -1,0 +1,76 @@
+# SYNTAX TEST "source.dottr" "dottr manifest"
+
+pkg git
+# <--- keyword.other.pkg.dottr
+#   ^^^ entity.name.type.unit.dottr
+
+pkg "tree-sitter-cli" # trailing comment
+#   ^^^^^^^^^^^^^^^^^ string.quoted.double.dottr entity.name.type.unit.dottr
+#                     ^ comment.line.number-sign.dottr punctuation.definition.comment.dottr
+#                       ^^^^^^^^ comment.line.number-sign.dottr
+
+pkg tmux do
+#        ^^ keyword.control.dottr
+  local TPM_DIR = "@{dottr.env.home}/tpm # not a comment"
+# ^^^^^ keyword.other.local.dottr
+#       ^^^^^^^ variable.other.dottr
+#               ^ keyword.operator.assignment.dottr
+#                 ^ string.quoted.double.dottr punctuation.definition.string.begin.dottr
+#                  ^^ string.quoted.double.dottr meta.interpolation.dottr punctuation.section.interpolation.begin.dottr
+#                    ^^^^^^^^^^^^^^ string.quoted.double.dottr meta.interpolation.dottr variable.language.dottr
+#                                  ^ string.quoted.double.dottr meta.interpolation.dottr punctuation.section.interpolation.end.dottr
+#                                        ^^^^^^^^^^^^^^^ string.quoted.double.dottr - comment
+  local QUOTED = "say \"hi\" @{TPM_DIR} \n @{"
+#                     ^^ constant.character.escape.dottr
+#                              ^^^^^^^ variable.other.dottr
+#                                       ^^ invalid.illegal.escape.dottr
+#                                          ^^ invalid.illegal.interpolation.dottr
+  needs git, "tree-sitter-cli" # comment
+# ^^^^^ keyword.other.needs.dottr
+#       ^^^ entity.name.type.unit.dottr
+#          ^ punctuation.separator.comma.dottr
+#            ^^^^^^^^^^^^^^^^^ entity.name.type.unit.dottr
+#                              ^^^^^^^^^ comment.line.number-sign.dottr
+  pkg tmux
+# ^^^ keyword.other.pkg.dottr
+#     ^^^^ entity.name.type.unit.dottr
+  check directory TPM_DIR
+# ^^^^^ keyword.other.check.dottr
+#       ^^^^^^^^^ support.type.predicate.dottr
+#                 ^^^^^^^ variable.other.dottr
+  create directory TPM_DIR
+# ^^^^^^ keyword.other.create.dottr
+#        ^^^^^^^^^ support.type.predicate.dottr
+  apply_if TPM_DIR do
+# ^^^^^^^^ keyword.control.conditional.dottr
+#          ^^^^^^^ variable.other.dottr
+    shell do
+#   ^^^^^ keyword.other.dottr
+      ```sh
+#     ^^^ punctuation.definition.raw.begin.dottr
+#        ^^ fenced_code.block.language.dottr
+      if [ -d "$TPM_DIR" ]; then
+#     ^^ meta.embedded.block.shell
+#     ^^ keyword.control.if.shell
+        git -C "$TPM_DIR" pull # shell comment, end else
+#                              ^^^^^^^^^^^^^^^^^^^^^^^^^ meta.embedded.block.shell comment.line.number-sign.shell
+      fi
+      ```
+#     ^^^ punctuation.definition.raw.end.dottr
+#     ^^^ - meta.embedded.block.shell
+    end
+#   ^^^ keyword.control.dottr
+  else
+# ^^^^ keyword.control.conditional.dottr
+    shell do
+      ```
+      git rev-parse @{u}
+#                   ^^^^ meta.embedded.block.shell - invalid
+      ```
+    end
+  end
+  apply_unless TPM_DIR do
+# ^^^^^^^^^^^^ keyword.control.conditional.dottr
+  end
+end
+# <--- keyword.control.dottr

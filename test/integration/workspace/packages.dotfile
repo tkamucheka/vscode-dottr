@@ -1,0 +1,6 @@
+pkg   git
+pkg app do
+  local ROOT = "@{dottr.env.home}/app"
+  needs missing
+  check directory ROOT
+end

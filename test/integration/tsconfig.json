@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node10",
+    "outDir": "../../out/test/integration",
+    "rootDir": ".",
+    "types": ["node", "vscode", "mocha"]
+  },
+  "include": ["."],
+  "exclude": ["workspace"]
+}

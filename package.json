@@ -1,0 +1,95 @@
+{
+  "name": "vscode-dottr",
+  "displayName": "dottr",
+  "description": "dottr manifests: highlighting, diagnostics, navigation, completion, and formatting through dottr-lsp",
+  "version": "0.1.0",
+  "publisher": "tkamucheka",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tkamucheka/vscode-dottr"
+  },
+  "engines": {
+    "vscode": "^1.91.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Formatters"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "languages": [
+      {
+        "id": "dottr",
+        "aliases": [
+          "dottr"
+        ],
+        "extensions": [
+          ".dotfile"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "dottr",
+        "scopeName": "source.dottr",
+        "path": "./syntaxes/dottr.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.shell": "shellscript"
+        }
+      }
+    ],
+    "configuration": {
+      "title": "dottr",
+      "properties": {
+        "dottr.server.path": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Path of the `dottr-lsp` program. If empty, `dottr-lsp` is found on `PATH`."
+        },
+        "dottr.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication with dottr-lsp in the output channel."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "dottr.restartServer",
+        "title": "Restart Language Server",
+        "category": "dottr"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "esbuild src/extension.ts --bundle --platform=node --format=cjs --external:vscode --outfile=dist/extension.js",
+    "watch": "npm run build -- --sourcemap --watch",
+    "typecheck": "tsc --noEmit",
+    "test:grammar": "node test/grammar/run.mjs",
+    "test:integration": "npm run build && tsc -p test/integration && node out/test/integration/run.js",
+    "test": "npm run typecheck && npm run test:grammar",
+    "package": "vsce package --no-dependencies --skip-license",
+    "vscode:prepublish": "npm run build -- --minify"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^10.1.2"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.19.17",
+    "@types/vscode": "~1.91.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.28.2",
+    "mocha": "^11.7.4",
+    "typescript": "^5.9.3",
+    "vscode-tmgrammar-test": "^0.1.3"
+  }
+}

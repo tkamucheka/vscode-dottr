@@ -1,0 +1,169 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "dottr",
+  "scopeName": "source.dottr",
+  "patterns": [
+    { "include": "#raw-block" },
+    { "include": "#comment" },
+    { "include": "#unit-declaration" },
+    { "include": "#needs" },
+    { "include": "#local" },
+    { "include": "#predicate-statement" },
+    { "include": "#conditional" },
+    { "include": "#string" },
+    { "include": "#keywords" }
+  ],
+  "repository": {
+    "comment": {
+      "match": "(#).*$",
+      "name": "comment.line.number-sign.dottr",
+      "captures": {
+        "1": { "name": "punctuation.definition.comment.dottr" }
+      }
+    },
+    "raw-block": {
+      "comment": "A fenced shell script; the fence is recognized only at the start of a line, as in dottr.",
+      "name": "meta.raw-block.dottr",
+      "begin": "^(\\s*)(```)(sh|bash|zsh)?\\s*$",
+      "beginCaptures": {
+        "2": { "name": "punctuation.definition.raw.begin.dottr" },
+        "3": { "name": "fenced_code.block.language.dottr" }
+      },
+      "end": "^\\s*(```)\\s*$",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.raw.end.dottr" }
+      },
+      "contentName": "meta.embedded.block.shell",
+      "patterns": [{ "include": "source.shell" }]
+    },
+    "unit-declaration": {
+      "comment": "pkg NAME, at top level or inside a unit.",
+      "match": "^\\s*(pkg)\\s+(?:([A-Za-z_][A-Za-z0-9_]*)|(\"(?:[^\"\\\\]|\\\\.)*\"))",
+      "captures": {
+        "1": { "name": "keyword.other.pkg.dottr" },
+        "2": { "name": "entity.name.type.unit.dottr" },
+        "3": { "name": "string.quoted.double.dottr entity.name.type.unit.dottr" }
+      }
+    },
+    "needs": {
+      "begin": "\\b(needs)\\b",
+      "beginCaptures": {
+        "1": { "name": "keyword.other.needs.dottr" }
+      },
+      "end": "(?=#)|$",
+      "patterns": [
+        {
+          "match": "[A-Za-z_][A-Za-z0-9_]*",
+          "name": "entity.name.type.unit.dottr"
+        },
+        {
+          "match": "\"(?:[^\"\\\\]|\\\\.)*\"",
+          "name": "string.quoted.double.dottr entity.name.type.unit.dottr"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.comma.dottr"
+        }
+      ]
+    },
+    "local": {
+      "match": "\\b(local)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(=)",
+      "captures": {
+        "1": { "name": "keyword.other.local.dottr" },
+        "2": { "name": "variable.other.dottr" },
+        "3": { "name": "keyword.operator.assignment.dottr" }
+      }
+    },
+    "predicate-statement": {
+      "patterns": [
+        {
+          "match": "\\b(check)\\s+(command|file|directory)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.other.check.dottr" },
+            "2": { "name": "support.type.predicate.dottr" },
+            "3": { "name": "variable.other.dottr" }
+          }
+        },
+        {
+          "match": "\\b(create)\\s+(directory)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.other.create.dottr" },
+            "2": { "name": "support.type.predicate.dottr" },
+            "3": { "name": "variable.other.dottr" }
+          }
+        }
+      ]
+    },
+    "conditional": {
+      "match": "\\b(apply_if|apply_unless)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+      "captures": {
+        "1": { "name": "keyword.control.conditional.dottr" },
+        "2": { "name": "variable.other.dottr" }
+      }
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "match": "\\b(else)\\b",
+          "name": "keyword.control.conditional.dottr"
+        },
+        {
+          "match": "\\b(do|end)\\b",
+          "name": "keyword.control.dottr"
+        },
+        {
+          "match": "\\b(pkg|local|needs|check|create|apply|shell)\\b",
+          "name": "keyword.other.dottr"
+        },
+        {
+          "match": "\\b(command|file|directory)\\b",
+          "name": "support.type.predicate.dottr"
+        },
+        {
+          "match": "=",
+          "name": "keyword.operator.assignment.dottr"
+        }
+      ]
+    },
+    "string": {
+      "name": "string.quoted.double.dottr",
+      "begin": "\"",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.string.begin.dottr" }
+      },
+      "end": "\"|$",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.string.end.dottr" }
+      },
+      "patterns": [
+        {
+          "match": "\\\\[\"\\\\]",
+          "name": "constant.character.escape.dottr"
+        },
+        {
+          "match": "\\\\.",
+          "name": "invalid.illegal.escape.dottr"
+        },
+        { "include": "#interpolation" }
+      ]
+    },
+    "interpolation": {
+      "patterns": [
+        {
+          "name": "meta.interpolation.dottr",
+          "match": "(@\\{)(?:(dottr(?:\\.[A-Za-z_][A-Za-z0-9_]*)+)|([A-Za-z_][A-Za-z0-9_]*(?:\\.[A-Za-z_][A-Za-z0-9_]*)*))(\\})",
+          "captures": {
+            "1": { "name": "punctuation.section.interpolation.begin.dottr" },
+            "2": { "name": "variable.language.dottr" },
+            "3": { "name": "variable.other.dottr" },
+            "4": { "name": "punctuation.section.interpolation.end.dottr" }
+          }
+        },
+        {
+          "match": "@\\{",
+          "name": "invalid.illegal.interpolation.dottr"
+        }
+      ]
+    }
+  }
+}
