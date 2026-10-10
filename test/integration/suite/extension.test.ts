@@ -53,7 +53,12 @@ suite("dottr", () => {
       document.uri,
       { tabSize: 2, insertSpaces: true },
     );
-    assert.strictEqual(edits.length, 1);
-    assert.match(edits[0].newText, /^pkg git\n/);
+    // VS Code reduces the server's whole-document edit to the minimal
+    // change, so the result is checked by applying the edits.
+    const edit = new vscode.WorkspaceEdit();
+    edit.set(document.uri, edits);
+    assert.ok(await vscode.workspace.applyEdit(edit));
+    assert.match(document.getText(), /^pkg git\npkg app do\n/);
+    await vscode.commands.executeCommand("workbench.action.files.revert");
   });
 });
