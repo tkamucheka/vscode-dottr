@@ -4,6 +4,7 @@
   "description": "dottr manifests: highlighting, diagnostics, navigation, completion, and formatting through dottr-lsp",
   "version": "0.1.0",
   "publisher": "tkamucheka",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/tkamucheka/vscode-dottr"
@@ -75,7 +76,7 @@
     "test:grammar": "node test/grammar/run.mjs",
     "test:integration": "npm run build && tsc -p test/integration && node out/test/integration/run.js",
     "test": "npm run typecheck && npm run test:grammar",
-    "package": "vsce package --no-dependencies --skip-license",
+    "package": "vsce package --no-dependencies",
     "vscode:prepublish": "npm run build -- --minify"
   },
   "dependencies": {

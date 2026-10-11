@@ -72,3 +72,7 @@ The grammar tests use the shell grammar of the installed VS Code; set
 `VSCODE_SHELL_GRAMMAR` to its `shell-unix-bash.tmLanguage.json` if it is not
 found. The integration tests download VS Code into `.vscode-test` unless
 `VSCODE_EXECUTABLE_PATH` names an installed one, and open a VS Code window.
+
+## License
+
+MIT; see [LICENSE](LICENSE).
