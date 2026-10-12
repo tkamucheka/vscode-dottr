@@ -9,6 +9,7 @@
     { "include": "#needs" },
     { "include": "#local" },
     { "include": "#predicate-statement" },
+    { "include": "#on-block" },
     { "include": "#conditional" },
     { "include": "#string" },
     { "include": "#keywords" }
@@ -91,6 +92,28 @@
             "2": { "name": "support.type.predicate.dottr" },
             "3": { "name": "variable.other.dottr" }
           }
+        }
+      ]
+    },
+    "on-block": {
+      "comment": "on SYSTEM, ... do: selects statements by system.",
+      "begin": "^\\s*(on)\\b",
+      "beginCaptures": {
+        "1": { "name": "keyword.control.conditional.dottr" }
+      },
+      "end": "\\b(do)\\b|$",
+      "endCaptures": {
+        "1": { "name": "keyword.control.dottr" }
+      },
+      "patterns": [
+        { "include": "#comment" },
+        {
+          "match": "\\b(linux|macos|windows|pacman|apt|dnf|brew|winget)\\b",
+          "name": "constant.language.system.dottr"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.comma.dottr"
         }
       ]
     },

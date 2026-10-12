@@ -74,3 +74,21 @@ pkg tmux do
   end
 end
 # <--- keyword.control.dottr
+
+on macos, windows do
+# <- keyword.control.conditional.dottr
+#  ^^^^^ constant.language.system.dottr
+#       ^ punctuation.separator.comma.dottr
+#         ^^^^^^^ constant.language.system.dottr
+#                 ^^ keyword.control.dottr
+  pkg rectangle
+# ^^^ keyword.other.pkg.dottr
+end
+pkg app do
+  on linux do
+# ^^ keyword.control.conditional.dottr
+#    ^^^^^ constant.language.system.dottr
+    local X = "on"
+#   ^^^^^ keyword.other.local.dottr
+  end
+end
