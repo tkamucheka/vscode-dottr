@@ -3,6 +3,7 @@
   "name": "dottr",
   "scopeName": "source.dottr",
   "patterns": [
+    { "include": "#powershell-block" },
     { "include": "#raw-block" },
     { "include": "#comment" },
     { "include": "#unit-declaration" },
@@ -21,6 +22,21 @@
       "captures": {
         "1": { "name": "punctuation.definition.comment.dottr" }
       }
+    },
+    "powershell-block": {
+      "comment": "A fenced PowerShell script, for the pwsh and powershell info strings.",
+      "name": "meta.raw-block.dottr",
+      "begin": "^(\\s*)(```)(pwsh|powershell)\\s*$",
+      "beginCaptures": {
+        "2": { "name": "punctuation.definition.raw.begin.dottr" },
+        "3": { "name": "fenced_code.block.language.dottr" }
+      },
+      "end": "^\\s*(```)\\s*$",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.raw.end.dottr" }
+      },
+      "contentName": "meta.embedded.block.powershell",
+      "patterns": [{ "include": "source.powershell" }]
     },
     "raw-block": {
       "comment": "A fenced shell script; the fence is recognized only at the start of a line, as in dottr.",

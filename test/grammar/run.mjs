@@ -1,7 +1,7 @@
-// Runs the grammar tests. The scripts of raw blocks embed VS Code's shell
-// grammar (source.shell), which is taken from the local VS Code installation
-// rather than copied into this repository. VSCODE_SHELL_GRAMMAR overrides the
-// search.
+// Runs the grammar tests. The scripts of raw blocks embed VS Code's shell and
+// PowerShell grammars (source.shell, source.powershell), which are taken from
+// the local VS Code installation rather than copied into this repository.
+// VSCODE_SHELL_GRAMMAR and VSCODE_POWERSHELL_GRAMMAR override the search.
 
 import { existsSync } from "node:fs";
 import { spawnSync } from "node:child_process";
@@ -26,12 +26,27 @@ if (!shell) {
   process.exit(2);
 }
 
+const powershellRelative =
+  "extensions/powershell/syntaxes/powershell.tmLanguage.json";
+const powershell =
+  process.env.VSCODE_POWERSHELL_GRAMMAR ??
+  shell.replace(relative, powershellRelative);
+if (!existsSync(powershell)) {
+  console.error(
+    "VS Code's PowerShell grammar was not found; set " +
+      "VSCODE_POWERSHELL_GRAMMAR to the path of " +
+      `${powershellRelative} in a VS Code installation.`,
+  );
+  process.exit(2);
+}
+
 const result = spawnSync(
   "npx",
   [
     "vscode-tmgrammar-test",
     "-g", "syntaxes/dottr.tmLanguage.json",
     "-g", shell,
+    "-g", powershell,
     "test/grammar/*.dotfile",
   ],
   { stdio: "inherit" },

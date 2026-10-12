@@ -3,7 +3,8 @@
 Visual Studio Code support for [dottr](https://github.com/tkamucheka/dottr)
 manifests (`*.dotfile`).
 
-* Highlighting, including the shell scripts of `shell` blocks
+* Highlighting, including the scripts of `shell` blocks, as shell or
+  PowerShell scripts
 * Diagnostics as you type
 * Go to definition, references, rename, and document and workspace symbols
   for units and variables
@@ -68,9 +69,10 @@ npm test                   # type check and grammar tests
 npm run test:integration   # run the extension in VS Code; needs dottr-lsp
 ```
 
-The grammar tests use the shell grammar of the installed VS Code; set
-`VSCODE_SHELL_GRAMMAR` to its `shell-unix-bash.tmLanguage.json` if it is not
-found. The integration tests download VS Code into `.vscode-test` unless
+The grammar tests use the shell and PowerShell grammars of the installed VS
+Code; set `VSCODE_SHELL_GRAMMAR` to its `shell-unix-bash.tmLanguage.json`
+and `VSCODE_POWERSHELL_GRAMMAR` to its `powershell.tmLanguage.json` if they
+are not found. The integration tests download VS Code into `.vscode-test` unless
 `VSCODE_EXECUTABLE_PATH` names an installed one, and open a VS Code window.
 
 ## License

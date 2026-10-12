@@ -37,7 +37,8 @@
         "scopeName": "source.dottr",
         "path": "./syntaxes/dottr.tmLanguage.json",
         "embeddedLanguages": {
-          "meta.embedded.block.shell": "shellscript"
+          "meta.embedded.block.shell": "shellscript",
+          "meta.embedded.block.powershell": "powershell"
         }
       }
     ],

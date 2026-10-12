@@ -92,3 +92,26 @@ pkg app do
 #   ^^^^^ keyword.other.local.dottr
   end
 end
+pkg terminal do
+  local PROFILE_DIR = "@{dottr.env.home}/Documents/PowerShell"
+  apply do
+    shell do
+      ```pwsh
+#     ^^^ punctuation.definition.raw.begin.dottr
+#        ^^^^ fenced_code.block.language.dottr
+      New-Item -ItemType Directory -Force $env:PROFILE_DIR
+#     ^^^^^^^^ meta.embedded.block.powershell
+#                                         ^ meta.embedded.block.powershell punctuation.definition.variable.powershell
+      ```
+#     ^^^ punctuation.definition.raw.end.dottr
+#     ^^^ - meta.embedded.block.powershell
+    end
+    shell do
+      ```powershell
+#        ^^^^^^^^^^ fenced_code.block.language.dottr
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+#     ^^ meta.embedded.block.powershell keyword.control.powershell
+      ```
+    end
+  end
+end
