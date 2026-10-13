@@ -1,3 +1,5 @@
+![A dottr manifest in Visual Studio Code with a hover and a diagnostic](.github/banner.png)
+
 # vscode-dottr
 
 Visual Studio Code support for [dottr](https://github.com/tkamucheka/dottr)
