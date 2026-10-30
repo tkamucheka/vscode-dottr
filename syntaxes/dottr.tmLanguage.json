@@ -11,6 +11,7 @@
     { "include": "#needs" },
     { "include": "#local" },
     { "include": "#predicate-statement" },
+    { "include": "#systems-declaration" },
     { "include": "#on-block" },
     { "include": "#conditional" },
     { "include": "#string" },
@@ -145,6 +146,23 @@
         }
       ]
     },
+    "systems-declaration": {
+      "begin": "^\\s*(systems)\\b",
+      "beginCaptures": {
+        "1": { "name": "keyword.other.systems.dottr" }
+      },
+      "end": "(?=#)|$",
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#list-continuation" },
+        { "include": "#system-selector" },
+        { "match": ",", "name": "punctuation.separator.comma.dottr" }
+      ]
+    },
+    "system-selector": {
+      "match": "\\b(linux|arch|debian|fedora|redhat|rhel|macos|windows)\\b",
+      "name": "constant.language.system.dottr"
+    },
     "on-block": {
       "comment": "on SYSTEM, ... do: selects statements by system.",
       "begin": "^\\s*(on)\\b",
@@ -158,10 +176,7 @@
       "patterns": [
         { "include": "#comment" },
         { "include": "#list-continuation" },
-        {
-          "match": "\\b(linux|macos|windows|pacman|apt|dnf|brew|winget)\\b",
-          "name": "constant.language.system.dottr"
-        },
+        { "include": "#system-selector" },
         {
           "match": ",",
           "name": "punctuation.separator.comma.dottr"
@@ -186,7 +201,7 @@
           "name": "keyword.control.dottr"
         },
         {
-          "match": "\\b(pkg|unit|local|needs|check|create|link|apply|shell)\\b",
+          "match": "\\b(pkg|unit|systems|local|needs|check|create|link|apply|shell)\\b",
           "name": "keyword.other.dottr"
         },
         {

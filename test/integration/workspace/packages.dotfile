@@ -1,3 +1,5 @@
+systems arch, debian
+
 pkg   git, curl
 unit app do
   pkg tmux, jq

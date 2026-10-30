@@ -1,5 +1,14 @@
 # SYNTAX TEST "source.dottr" "dottr manifest"
 
+systems arch, # supported families
+# <--- keyword.other.systems.dottr
+#       ^^^^ constant.language.system.dottr
+        debian, fedora, redhat, rhel
+#       ^^^^^^ constant.language.system.dottr
+#               ^^^^^^ constant.language.system.dottr
+#                       ^^^^^^ constant.language.system.dottr
+#                               ^^^^ constant.language.system.dottr
+
 pkg curl, # continued packages
 # <--- keyword.other.pkg.dottr
 #   ^^^^ entity.name.type.unit.dottr
@@ -18,11 +27,11 @@ unit lists do
 # ^^^^^ keyword.other.needs.dottr
         jq
 #       ^^ entity.name.type.unit.dottr
-  on apt, # continued systems
+  on debian, # continued systems
 # ^^ keyword.control.conditional.dottr
-     pacman do
-#    ^^^^^^ constant.language.system.dottr
-#           ^^ keyword.control.dottr
+     arch do
+#    ^^^^ constant.language.system.dottr
+#         ^^ keyword.control.dottr
     pkg tmux, jq
 #   ^^^ keyword.other.pkg.dottr
 #       ^^^^ entity.name.type.unit.dottr

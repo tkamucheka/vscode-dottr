@@ -49,9 +49,13 @@ suite("dottr", () => {
     const hovers = await vscode.commands.executeCommand<vscode.Hover[]>(
       "vscode.executeHoverProvider",
       document.uri,
-      new vscode.Position(3, 9),
+      new vscode.Position(5, 9),
     );
     assert.match(hoverText(hovers), /local ROOT = /);
+    const familyHover = await vscode.commands.executeCommand<vscode.Hover[]>(
+      "vscode.executeHoverProvider", document.uri, new vscode.Position(0, 10),
+    );
+    assert.match(hoverText(familyHover), /Arch family/);
 
     const symbols = await vscode.commands.executeCommand<vscode.DocumentSymbol[]>(
       "vscode.executeDocumentSymbolProvider",
@@ -70,7 +74,7 @@ suite("dottr", () => {
     const edit = new vscode.WorkspaceEdit();
     edit.set(document.uri, edits);
     assert.ok(await vscode.workspace.applyEdit(edit));
-    assert.match(document.getText(), /^pkg git, curl\nunit app do\n/);
+    assert.match(document.getText(), /^systems arch, debian\n\npkg git, curl\nunit app do\n/);
     await vscode.commands.executeCommand("workbench.action.files.revert");
   });
 });
