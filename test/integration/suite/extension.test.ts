@@ -31,6 +31,11 @@ function hoverText(hovers: vscode.Hover[]): string {
 
 suite("dottr", () => {
   test("language, diagnostics, hover, and formatting", async () => {
+    if (process.env.DOTTR_LSP_PATH) {
+      await vscode.workspace.getConfiguration("dottr").update(
+        "server.path", process.env.DOTTR_LSP_PATH, vscode.ConfigurationTarget.Global,
+      );
+    }
     const document = await vscode.workspace.openTextDocument(manifest);
     await vscode.window.showTextDocument(document);
     assert.strictEqual(document.languageId, "dottr");
@@ -44,9 +49,16 @@ suite("dottr", () => {
     const hovers = await vscode.commands.executeCommand<vscode.Hover[]>(
       "vscode.executeHoverProvider",
       document.uri,
-      new vscode.Position(2, 9),
+      new vscode.Position(3, 9),
     );
     assert.match(hoverText(hovers), /local ROOT = /);
+
+    const symbols = await vscode.commands.executeCommand<vscode.DocumentSymbol[]>(
+      "vscode.executeDocumentSymbolProvider",
+      document.uri,
+    );
+    assert.deepStrictEqual(symbols.map((symbol) => symbol.name), ["git", "curl", "app"]);
+    assert.deepStrictEqual(symbols[2].children.map((symbol) => symbol.name), ["tmux", "jq", "ROOT"]);
 
     const edits = await vscode.commands.executeCommand<vscode.TextEdit[]>(
       "vscode.executeFormatDocumentProvider",
@@ -58,7 +70,7 @@ suite("dottr", () => {
     const edit = new vscode.WorkspaceEdit();
     edit.set(document.uri, edits);
     assert.ok(await vscode.workspace.applyEdit(edit));
-    assert.match(document.getText(), /^pkg git\npkg app do\n/);
+    assert.match(document.getText(), /^pkg git, curl\nunit app do\n/);
     await vscode.commands.executeCommand("workbench.action.files.revert");
   });
 });

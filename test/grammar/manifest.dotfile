@@ -1,5 +1,35 @@
 # SYNTAX TEST "source.dottr" "dottr manifest"
 
+pkg curl, # continued packages
+# <--- keyword.other.pkg.dottr
+#   ^^^^ entity.name.type.unit.dottr
+    "jq",
+#   ^^^^ entity.name.type.unit.dottr
+
+# package list comment
+# <--- comment.line.number-sign.dottr
+    git
+#   ^^^ entity.name.type.unit.dottr
+
+unit lists do
+# <--- keyword.other.unit.dottr
+#    ^^^^^ entity.name.type.unit.dottr
+  needs curl, # continued dependencies
+# ^^^^^ keyword.other.needs.dottr
+        jq
+#       ^^ entity.name.type.unit.dottr
+  on apt, # continued systems
+# ^^ keyword.control.conditional.dottr
+     pacman do
+#    ^^^^^^ constant.language.system.dottr
+#           ^^ keyword.control.dottr
+    pkg tmux, jq
+#   ^^^ keyword.other.pkg.dottr
+#       ^^^^ entity.name.type.unit.dottr
+#             ^^ entity.name.type.unit.dottr
+  end
+end
+
 pkg git
 # <--- keyword.other.pkg.dottr
 #   ^^^ entity.name.type.unit.dottr
@@ -9,8 +39,9 @@ pkg "tree-sitter-cli" # trailing comment
 #                     ^ comment.line.number-sign.dottr punctuation.definition.comment.dottr
 #                       ^^^^^^^^ comment.line.number-sign.dottr
 
-pkg tmux do
-#        ^^ keyword.control.dottr
+unit tmux do
+# <--- keyword.other.unit.dottr
+#         ^^ keyword.control.dottr
   local TPM_DIR = "@{dottr.env.home}/tpm # not a comment"
 # ^^^^^ keyword.other.local.dottr
 #       ^^^^^^^ variable.other.dottr
@@ -84,7 +115,7 @@ on macos, windows do
   pkg rectangle
 # ^^^ keyword.other.pkg.dottr
 end
-pkg app do
+unit app do
   on linux do
 # ^^ keyword.control.conditional.dottr
 #    ^^^^^ constant.language.system.dottr
@@ -92,7 +123,7 @@ pkg app do
 #   ^^^^^ keyword.other.local.dottr
   end
 end
-pkg terminal do
+unit terminal do
   local PROFILE_DIR = "@{dottr.env.home}/Documents/PowerShell"
   apply do
     shell do

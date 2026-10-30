@@ -1,5 +1,6 @@
-pkg   git
-pkg app do
+pkg   git, curl
+unit app do
+  pkg tmux, jq
   local ROOT = "@{dottr.env.home}/app"
   needs missing
   check directory ROOT

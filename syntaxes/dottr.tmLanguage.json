@@ -7,6 +7,7 @@
     { "include": "#raw-block" },
     { "include": "#comment" },
     { "include": "#unit-declaration" },
+    { "include": "#package-list" },
     { "include": "#needs" },
     { "include": "#local" },
     { "include": "#predicate-statement" },
@@ -54,13 +55,44 @@
       "patterns": [{ "include": "source.shell" }]
     },
     "unit-declaration": {
-      "comment": "pkg NAME, at top level or inside a unit.",
-      "match": "^\\s*(pkg)\\s+(?:([A-Za-z_][A-Za-z0-9_]*)|(\"(?:[^\"\\\\]|\\\\.)*\"))",
+      "comment": "unit NAME do, at top level.",
+      "match": "^\\s*(unit)\\s+(?:([A-Za-z_][A-Za-z0-9_]*)|(\"(?:[^\"\\\\]|\\\\.)*\"))",
       "captures": {
-        "1": { "name": "keyword.other.pkg.dottr" },
+        "1": { "name": "keyword.other.unit.dottr" },
         "2": { "name": "entity.name.type.unit.dottr" },
         "3": { "name": "string.quoted.double.dottr entity.name.type.unit.dottr" }
       }
+    },
+    "list-continuation": {
+      "begin": ",(?=[ \t]*(?:#.*)?$)",
+      "beginCaptures": {
+        "0": { "name": "punctuation.separator.comma.dottr" }
+      },
+      "end": "^(?=[ \t]*[^#\\s])",
+      "patterns": [{ "include": "#comment" }]
+    },
+    "package-list": {
+      "begin": "\\b(pkg)\\b",
+      "beginCaptures": {
+        "1": { "name": "keyword.other.pkg.dottr" }
+      },
+      "end": "(?=#)|$",
+      "patterns": [
+        { "include": "#list-continuation" },
+        { "include": "#comment" },
+        {
+          "match": "[A-Za-z_][A-Za-z0-9_]*",
+          "name": "entity.name.type.unit.dottr"
+        },
+        {
+          "match": "\"(?:[^\"\\\\]|\\\\.)*\"",
+          "name": "string.quoted.double.dottr entity.name.type.unit.dottr"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.comma.dottr"
+        }
+      ]
     },
     "needs": {
       "begin": "\\b(needs)\\b",
@@ -69,6 +101,8 @@
       },
       "end": "(?=#)|$",
       "patterns": [
+        { "include": "#list-continuation" },
+        { "include": "#comment" },
         {
           "match": "[A-Za-z_][A-Za-z0-9_]*",
           "name": "entity.name.type.unit.dottr"
@@ -123,6 +157,7 @@
       },
       "patterns": [
         { "include": "#comment" },
+        { "include": "#list-continuation" },
         {
           "match": "\\b(linux|macos|windows|pacman|apt|dnf|brew|winget)\\b",
           "name": "constant.language.system.dottr"
@@ -151,7 +186,7 @@
           "name": "keyword.control.dottr"
         },
         {
-          "match": "\\b(pkg|local|needs|check|create|apply|shell)\\b",
+          "match": "\\b(pkg|unit|local|needs|check|create|link|apply|shell)\\b",
           "name": "keyword.other.dottr"
         },
         {
